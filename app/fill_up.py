@@ -100,7 +100,12 @@ def fill_up(date=None):
                     event_processor = EVENT_MAPPER.get(event['type'])
                     if event_processor:
                         event_processor(session, event)
+                    del event
+                    del line
+            del content_f
             response.close()
+            del response
+            del url
 
 
 if __name__ == '__main__':
