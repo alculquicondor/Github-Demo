@@ -79,7 +79,7 @@ def fill_up(date=None):
             date = datetime.date.today()
         date_str = date.strftime('%Y-%m-%d')
     with neo4j_session() as session:
-        for hour in range(1):
+        for hour in range(24):
             url = GITHUB_ARCHIVE_URL % (date_str, hour)
             print(url)
             response = requests.get(url)
