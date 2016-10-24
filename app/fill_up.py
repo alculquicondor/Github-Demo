@@ -24,6 +24,12 @@ def add_user_to_user(session, username1, username2, relationship):
                 'MERGE (u1)-[:%s]->(u2)' % (username1, username2, relationship))
 
 
+def add_repo_to_repo(session, repo1, repo2, relationship):
+    session.run('MERGE (u:Repository{name: "%s"}) '
+                'MERGE (r:Repository{name: "%s"}) '
+                'MERGE (u)-[:%s]->(r)' % (repo1, repo2, relationship))
+
+
 def process_create_event(session, event):
     if event['payload']['ref_type'] == 'repository':
         add_user_to_repo(session, event['actor']['login'],
@@ -36,10 +42,9 @@ def process_follow_event(session, event):
 
 
 def process_fork_event(session, event):
-    add_user_to_repo(session, event['actor']['login'],
-                     event['repo']['name'], 'FORKED')
-    add_user_to_repo(session, event['actor']['login'],
-                     event['payload']['forkee']['full_name'], 'CREATED')
+    forkee = event['payload']['forkee']['full_name']
+    add_repo_to_repo(session, forkee, event['repo']['name'], 'FORKS')
+    add_user_to_repo(session, event['actor']['login'], forkee, 'CREATED')
 
 
 def process_member_event(session, event):
@@ -95,6 +100,7 @@ def fill_up(date=None):
                     event_processor = EVENT_MAPPER.get(event['type'])
                     if event_processor:
                         event_processor(session, event)
+            response.close()
 
 
 if __name__ == '__main__':
