@@ -1,5 +1,7 @@
 import datetime
+import gc
 import gzip
+from io import BytesIO
 import json
 
 import requests
@@ -80,17 +82,19 @@ def fill_up(date=None):
         date_str = date.strftime('%Y-%m-%d')
     with neo4j_session() as session:
         for hour in range(24):
+            gc.collect()
             url = GITHUB_ARCHIVE_URL % (date_str, hour)
             print(url)
-            response = requests.get(url)
-            content = gzip.decompress(response.content).decode('utf8')
-            for line in content.split('\n'):
-                if not line:
-                    continue
-                event = json.loads(line)
-                event_processor = EVENT_MAPPER.get(event['type'])
-                if event_processor:
-                    event_processor(session, event)
+            response = BytesIO(requests.get(url).content)
+            with gzip.GzipFile(fileobj=response, mode='r') as content_f:
+                for line in content_f:
+                    line = line.decode('utf8').strip()
+                    if not line:
+                        continue
+                    event = json.loads(line)
+                    event_processor = EVENT_MAPPER.get(event['type'])
+                    if event_processor:
+                        event_processor(session, event)
 
 
 if __name__ == '__main__':
