@@ -85,13 +85,13 @@ def fill_up(date=None):
         if not date:
             date = datetime.date.today()
         date_str = date.strftime('%Y-%m-%d')
-    with neo4j_session() as session:
-        for hour in range(24):
-            gc.collect()
-            url = GITHUB_ARCHIVE_URL % (date_str, hour)
-            print(url)
-            response = BytesIO(requests.get(url).content)
-            with gzip.GzipFile(fileobj=response, mode='r') as content_f:
+    for hour in range(24):
+        gc.collect()
+        url = GITHUB_ARCHIVE_URL % (date_str, hour)
+        print(url)
+        response = BytesIO(requests.get(url).content)
+        with gzip.GzipFile(fileobj=response, mode='r') as content_f:
+            with neo4j_session() as session:
                 for line in content_f:
                     line = line.decode('utf8').strip()
                     if not line:
@@ -100,12 +100,7 @@ def fill_up(date=None):
                     event_processor = EVENT_MAPPER.get(event['type'])
                     if event_processor:
                         event_processor(session, event)
-                    del event
-                    del line
-            del content_f
-            response.close()
-            del response
-            del url
+        response.close()
 
 
 if __name__ == '__main__':
