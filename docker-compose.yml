@@ -1,0 +1,37 @@
+version: '2'
+
+volumes:
+    neo4jdata:
+
+services:
+    neo4j:
+        image: neo4j:3.0
+        volumes:
+            - neo4jdata:/data
+        ports:
+            - 127.0.0.1:7474:7474
+        expose:
+            - 7474
+            - 7687
+
+    gunicorn:
+        build:
+            context: .
+            dockerfile: ./docker/gunicorn/Dockerfile
+        image: alculquicondor/github_demo_gunicorn
+        volumes:
+            - ./app:/srv/gis
+        links:
+            - neo4j
+
+    nginx:
+        build:
+            context: .
+            dockerfile: ./docker/nginx/Dockerfile
+        image: alculquicondor/github_demo_nginx
+        volumes:
+            - ./static:/srv/gis
+        links:
+            - gunicorn
+        ports:
+            - "80:80"

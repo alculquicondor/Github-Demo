@@ -1,0 +1,2 @@
+neo4j-driver==1.0.2
+requests==2.11.1
