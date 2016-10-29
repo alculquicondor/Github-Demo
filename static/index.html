@@ -1,0 +1,82 @@
+<html>
+
+    <head>
+        <link rel="stylesheet" href="app/app.css">
+        <meta charset="UTF-8">
+    </head>
+
+    <body ng-app="app" ng-controller="mainController">
+
+        <div>
+            
+            <!-- Search tabs -->
+            <div class="tabs-container">
+                <button
+                    ng-click="methods.searchByUser()"
+                    class="{{ attrs.searchType=='repo' || 'active' }}"
+                >User</button>
+                <button
+                    ng-click="methods.searchByRepo()"
+                    class="{{ attrs.searchType=='user' || 'active' }}"
+                >Repo</button>
+            </div>
+
+            <!-- Search input -->
+            <div class="search-container">
+                <input type="search" ng-model="attrs.query" placeholder="Repo or Username">
+                <button ng-click="methods.search()">Search</button>
+            </div>
+
+            <!-- Results container -->
+            <div class="results-container" ng-if="attrs.results">
+
+                <!-- Related User -->
+                <div class="subcontainer" ng-if="attrs.searchType=='user'">
+                    <h5>User Data</h5>
+                    <p>
+                        <span>Photo</span>
+                        <img src="{{ attrs.userData.avatar_url }}" width="100">
+                    </p>
+                    <p>
+                        <span>Name</span>
+                        <span>{{ attrs.userData.name }}</span>
+                    </p>
+                    <p>
+                        <span>Username</span>
+                        <span>{{ attrs.userData.login }}</span>
+                    </p>
+                    <p>
+                        <span>Profile</span>
+                        <a href="{{ attrs.userData.html_url }}" target="_blank"><span>{{ attrs.userData.html_url }}</span></a>
+                    </p>
+                </div>
+                
+                <!-- Contributions -->
+                <div class="subcontainer" ng-if="attrs.searchType=='user'">
+                    <h5>Contributions</h5>
+                    <div ng-repeat="contribution in attrs.contributions">
+                        <p>
+                            <a href="{{ contribution.html_url }}">{{ contribution.name }}</a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Related repos -->
+                <div class="subcontainer">
+                    <h5>Related repos</h5>
+                    <div ng-repeat="relatedRepo in attrs.relatedRepos">
+                        <p>
+                            <span>{{ relatedRepo.repo }}</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <script src="libs/angular.min.js"></script>
+        <script src="app/app.js"></script>
+    </body>
+
+</html>

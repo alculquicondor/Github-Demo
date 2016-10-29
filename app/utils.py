@@ -3,7 +3,7 @@ from contextlib import contextmanager
 from neo4j.v1 import GraphDatabase, basic_auth
 
 driver = GraphDatabase.driver("bolt://neo4j",
-                              auth=basic_auth("neo4j", "github_demo"))
+                              auth=basic_auth("neo4j", "githubdemo"))
 
 
 @contextmanager
