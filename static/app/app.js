@@ -53,8 +53,10 @@ app.controller('mainController', function ($scope, $http) {
             });
         }
         $scope.methods.relatedRepos = function () {
-            $http.get('http://35.160.135.106/api/'+$scope.attrs.query).then(function (resp) {
+            // $http.get('http://35.160.135.106/api/'+$scope.attrs.query).then(function (resp) {
+            $http.get('/api/'+$scope.attrs.query).then(function (resp) {
                 $scope.attrs.relatedRepos = resp.data.recommended;
+                console.log(resp);
                 $scope.attrs.results = true;
             });
             /*var data = { "contributed": [ { "contributor": "keksobot", "what": [ "PUSHED" ] }, { "contributor": "CunoVery", "what": [ "PULL_REQUEST" ] } ], "creator": null, "forks": [], "similar": [ { "count": 1, "repo": "htmlacademy-htmlcss/267983-sedona" }, { "count": 1, "repo": "htmlacademy-htmlcss/251249-sedona" }, { "count": 1, "repo": "htmlacademy-htmlcss/279207-nerds" }, { "count": 1, "repo": "htmlacademy-htmlcss/144865-sedona" }, { "count": 1, "repo": "CunoVery/239472-technomart" }, { "count": 1, "repo": "htmlacademy-htmlcss/235021-sedona" }, { "count": 1, "repo": "htmlacademy-htmlcss/176447-sedona" }, { "count": 1, "repo": "htmlacademy-htmlcss/250559-barbershop" } ], "stars": 0 };
