@@ -54,10 +54,8 @@ app.controller('mainController', function ($scope, $http) {
         }
         $scope.methods.relatedRepos = function () {
             $scope.attrs.loading = true;
+            $scope.attrs.results = false;
             $http.get('/api/'+$scope.attrs.query).then(function (resp) {
-                /*$scope.attrs.relatedRepos = $scope.attrs.searchType === 'user' ? resp.data.recommended : resp.data.simmilar;
-                console.log(resp);
-                $scope.attrs.results = true;*/
                 switch ($scope.attrs.searchType) {
                     case 'user':
                         $scope.attrs.relatedRepos = resp.data.recommended;
