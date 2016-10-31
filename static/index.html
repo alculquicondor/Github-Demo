@@ -51,22 +51,12 @@
                     </p>
                 </div>
                 
-                <!-- Created -->                
-                <!-- <div class="subcontainer" ng-if="attrs.searchType=='user'">
-                    <h5>Creations</h5>
-                    <div ng-repeat="created in attrs.creations">
-                        <p>
-                            <a href="http://github.com/{{ creation }}"></a>
-                        </p>
-                    </div>
-                </div> -->
-
                 <!-- Contributions -->
                 <div class="subcontainer" ng-if="attrs.searchType=='user'">
                     <h5>Contributions</h5>
                     <div ng-repeat="contribution in attrs.contributions">
                         <p>
-                            <a href="http://github.com/{{ contribution }}">{{ contribution.repo }}</a>
+                            <a href="{{ contribution.html_url }}">{{ contribution.name }}</a>
                         </p>
                     </div>
                 </div>
