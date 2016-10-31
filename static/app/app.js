@@ -55,7 +55,8 @@ app.controller('mainController', function ($scope, $http) {
         $scope.methods.relatedRepos = function () {
             // $http.get('http://35.160.135.106/api/'+$scope.attrs.query).then(function (resp) {
             $http.get('/api/'+$scope.attrs.query).then(function (resp) {
-                $scope.attrs.relatedRepos = resp.data.recommended;
+                //$scope.attrs.relatedRepos = resp.data.recommended;
+                $scope.attrs.relatedRepos = $scope.attrs.searchType === 'user' ? resp.data.recommended : resp.data.simmilar;
                 console.log(resp);
                 $scope.attrs.results = true;
             });
