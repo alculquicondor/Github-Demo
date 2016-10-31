@@ -49,11 +49,11 @@ app.controller('mainController', function ($scope, $http) {
             });
         }
 
-        $scope.methods.loadCreations = function () {
+        /*$scope.methods.loadCreations = function () {
             $http.get('/api/'+$scope.attrs.query).then(function (resp) {
                 $scope.attrs.creations = resp.data.created;
             }
-        }
+        }*/
 
 
         $scope.methods.loadContributions = function () {
