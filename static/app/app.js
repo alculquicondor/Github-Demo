@@ -53,6 +53,7 @@ app.controller('mainController', function ($scope, $http) {
             });
         }
         $scope.methods.relatedRepos = function () {
+            $scope.attrs.loading = true;
             $http.get('/api/'+$scope.attrs.query).then(function (resp) {
                 /*$scope.attrs.relatedRepos = $scope.attrs.searchType === 'user' ? resp.data.recommended : resp.data.simmilar;
                 console.log(resp);
@@ -65,6 +66,8 @@ app.controller('mainController', function ($scope, $http) {
                         $scope.attrs.relatedRepos = resp.data.similar;
                     break;
                 }
+                $scope.attrs.results = true;
+                $scope.attrs.loading = false;
             });
         }
 
