@@ -35,6 +35,7 @@ app.controller('mainController', function ($scope, $http) {
             switch ($scope.attrs.searchType) {
                 case 'user':
                     $scope.methods.loadUserData();
+                    $scope.methods.loadCreations();
                     $scope.methods.loadContributions();
                     $scope.methods.relatedRepos();
                 break;
