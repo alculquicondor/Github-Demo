@@ -17,6 +17,7 @@ app.controller('mainController', function ($scope, $http) {
         $scope.methods.reset = function () {
             $scope.attrs.query = '';
             $scope.attrs.userData = null;
+            $scope.attrs.creations = null;
             $scope.attrs.contributions = null;
             $scope.attrs.relatedRepos = null;
             $scope.attrs.results = false;
@@ -47,10 +48,22 @@ app.controller('mainController', function ($scope, $http) {
                 $scope.methods.loadContributions(resp.data.repos_url);
             });
         }
-        $scope.methods.loadContributions = function (url) {
-            $http.get(url).then(function (resp) {
+
+        $scope.methods.loadCreations = function () {
+            $http.get('/api/'+$scope.attrs.query).then(function (resp) {
+                $scope.attrs.creations = resp.data.created;
+            }
+        }
+
+
+        $scope.methods.loadContributions = function () {
+            /*$http.get(url).then(function (resp) {
                 $scope.attrs.contributions = resp.data;
-            });
+            });*/
+            $http.get('/api/'+$scope.attrs.query).then(function (resp) {
+                console.log(resp);
+                $scope.attrs.contributions = resp.data.contributes_to;
+            }
         }
         $scope.methods.relatedRepos = function () {
             $scope.attrs.loading = true;
